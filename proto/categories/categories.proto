@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package go.micro.srv.cm.categories;
+option go_package="categories";
+
+import "google/protobuf/timestamp.proto";
+import "github.com/jianhan/pkg/proto/mysql/mysql.proto";
+
+service Categories {
+	rpc UpsertCategories(UpsertCategoriesRequest) returns (go.micro.srv.pkg.mysql.UpsertResult) {}
+	// rpc GetCategoriesByFilters(GetCategoriesByFiltersRequest) returns (GetCategoriesByFiltersResponse) {}
+	// rpc DeleteCategoriesByIDs(DeleteCategoriesByIDsRequest) returns (DeleteCategoriesByIDsResponse) {}
+}
+
+message Category {
+	string id = 1;
+	string name = 2;
+	string slug = 3;
+	string description = 4;
+	uint32 display_order = 5;
+	bool visible = 6;
+	google.protobuf.Timestamp created_at = 7;
+	google.protobuf.Timestamp updated_at = 8;
+	map<string, string> courses = 9;
+}
+
+message CategoryFilterSet {
+	repeated string ids = 1;
+	string text_search = 2;
+	repeated string names = 3;
+	repeated string slugs = 4;
+	go.micro.srv.pkg.mysql.BoolField visible = 5;
+}
+
+message UpsertCategoriesRequest {
+  repeated Category categories = 1;
+	bool upsert_courses = 2;
+}
+
+// message GetCategoriesByFiltersRequest {
+// 	CategoryFilterSet filter_set = 1;
+// }
+//
+// message GetCategoriesByFiltersResponse {
+// 	repeated Category categories = 1;
+// }
+//
+// message DeleteCategoriesByIDsRequest {
+// 	repeated string ids = 1;
+// }
+//
+// message DeleteCategoriesByIDsResponse {
+// 	uint32 removed = 1;
+// }
